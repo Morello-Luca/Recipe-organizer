@@ -25,11 +25,11 @@ var DEFAULT_LIBRARY = [
       "Maldon sea salt"
     ],
     steps: [
-      { text: "Score duck skin in a crosshatch pattern without piercing flesh, season generously, and rest at room temperature for 20 minutes." },
-      { text: "Cut potatoes into neat cylinders, sear in butter, then braise with veal stock and thyme for 25 minutes [timer: 25m] until tender." },
-      { text: "Place duck skin-side down in a cold skillet. Render over medium-low heat for 12 minutes [timer: 12m] until dark golden brown, flipping to finish for 2 minutes." },
-      { text: "Simmer cherries, red wine vinegar, and sugar in a small saucepan for 15 minutes [timer: 15m] until thick, glossy gastrique forms." },
-      { text: "Sear endive halves cut-side down in duck fat for 4 minutes [timer: 4m] until caramelized. Rest duck 8 minutes before slicing." }
+      { text: "Score duck skin in a crosshatch pattern without piercing flesh, season generously, and rest at room temperature for 20 minutes.", image: "https://images.unsplash.com/photo-1514944288352-fffac99f0bdf?auto=format&fit=crop&w=800&q=80" },
+      { text: "Cut potatoes into neat cylinders, sear in butter, then braise with veal stock and thyme for 25 minutes [timer: 25m] until tender.", image: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80" },
+      { text: "Place duck skin-side down in a cold skillet. Render over medium-low heat for 12 minutes [timer: 12m] until dark golden brown, flipping to finish for 2 minutes.", image: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" },
+      { text: "Simmer cherries, red wine vinegar, and sugar in a small saucepan for 15 minutes [timer: 15m] until thick, glossy gastrique forms.", image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" },
+      { text: "Sear endive halves cut-side down in duck fat for 4 minutes [timer: 4m] until caramelized. Rest duck 8 minutes before slicing.", image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=800&q=80" }
     ],
     chefNote: "Ensure the cast-iron pan starts completely cold when rendering duck skin for maximum crispiness.",
     tags: ["Signature", "French Classic", "Poularde"],
@@ -55,10 +55,10 @@ var DEFAULT_LIBRARY = [
       "Fleur de sel"
     ],
     steps: [
-      { text: "Freeze scallops for 10 minutes [timer: 10m] to firm up, then slice paper-thin with a sharp knife." },
-      { text: "Whisk yuzu juice with olive oil and a pinch of fleur de sel." },
-      { text: "Arrange scallop slices in a single overlapping layer on chilled porcelain plates." },
-      { text: "Garnish with finger lime pearls, shaved radish ribbons, and drizzle with chive oil right before serving." }
+      { text: "Freeze scallops for 10 minutes [timer: 10m] to firm up, then slice paper-thin with a sharp knife.", image: "https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80" },
+      { text: "Whisk yuzu juice with olive oil and a pinch of fleur de sel.", image: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?auto=format&fit=crop&w=800&q=80" },
+      { text: "Arrange scallop slices in a single overlapping layer on chilled porcelain plates.", image: "https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80" },
+      { text: "Garnish with finger lime pearls, shaved radish ribbons, and drizzle with chive oil right before serving.", image: "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80" }
     ],
     chefNote: "Keep porcelain plates in the freezer for 15 minutes before plating to maintain scallop temperature.",
     tags: ["Raw", "Seafood", "Japanese Fusion"],
@@ -85,11 +85,11 @@ var DEFAULT_LIBRARY = [
       "1 vanilla bean, split & scraped"
     ],
     steps: [
-      { text: "Brush ramekins with softened butter using upward vertical strokes, then coat thoroughly with sugar." },
-      { text: "Prepare pastry cream base with milk, vanilla bean, egg yolks, flour, and Grand Marnier. Cool slightly." },
-      { text: "Whip egg whites with 60g sugar to glossy medium peaks." },
-      { text: "Fold 1/3 of whipped whites into pastry cream to lighten, then gently fold remaining whites." },
-      { text: "Fill ramekins, level top with a spatula, and bake at 190°C for 14 minutes [timer: 14m] without opening oven door." }
+      { text: "Brush ramekins with softened butter using upward vertical strokes, then coat thoroughly with sugar.", image: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80" },
+      { text: "Prepare pastry cream base with milk, vanilla bean, egg yolks, flour, and Grand Marnier. Cool slightly.", image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=800&q=80" },
+      { text: "Whip egg whites with 60g sugar to glossy medium peaks.", image: "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80" },
+      { text: "Fold 1/3 of whipped whites into pastry cream to lighten, then gently fold remaining whites.", image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=800&q=80" },
+      { text: "Fill ramekins, level top with a spatula, and bake at 190°C for 14 minutes [timer: 14m] without opening oven door.", image: "https://images.unsplash.com/photo-1579372786545-d24232daf58c?auto=format&fit=crop&w=800&q=80" }
     ],
     chefNote: "Do not open oven door during the first 12 minutes of baking to prevent soufflés from collapsing.",
     tags: ["Pastry", "French Dessert"],
@@ -452,8 +452,15 @@ function renderDetailView() {
   html += '      <ol class="step-list">';
   (r.steps || []).forEach(function(s, idx) {
     var stepText = typeof s === "string" ? s : s.text;
+    var stepImg = typeof s === "object" && s ? s.image : null;
     html += '        <li class="step-item">';
     html += '          <div>' + esc(stepText) + '</div>';
+
+    if (stepImg) {
+      html += '          <div class="step-image-container">';
+      html += '            <img src="' + esc(stepImg) + '" alt="Step ' + (idx + 1) + ' illustration" loading="lazy">';
+      html += '          </div>';
+    }
 
     // Auto-detect timer bracket e.g. [timer: 15m]
     var timerMatch = stepText.match(/\[timer:\s*(\d+)(m|s)?\]/i);
@@ -486,6 +493,7 @@ function renderCookingView() {
   var steps = r.steps || [];
   var currentStep = steps[state.cookingStepIdx] || { text: "No instruction" };
   var stepText = typeof currentStep === "string" ? currentStep : currentStep.text;
+  var stepImg = typeof currentStep === "object" && currentStep ? currentStep.image : null;
 
   var html = '<div class="cooking-overlay">';
   html += '  <div class="cooking-header">';
@@ -497,6 +505,9 @@ function renderCookingView() {
   html += '  </div>';
 
   html += '  <div class="cooking-step-container">';
+  if (stepImg) {
+    html += '    <img class="cooking-step-img" src="' + esc(stepImg) + '" alt="Step Image">';
+  }
   html += '    <div class="cooking-step-num">STEP ' + (state.cookingStepIdx + 1) + '</div>';
   html += '    <div class="cooking-step-text">' + esc(stepText) + '</div>';
 
@@ -549,6 +560,11 @@ function renderEditView() {
   html += '  </div>';
 
   html += '  <div class="form-field">';
+  html += '    <label>Cover Photo URL</label>';
+  html += '    <input class="form-input" id="f-photo" type="text" value="' + esc(d.photo || "") + '" placeholder="https://images.unsplash.com/...">';
+  html += '  </div>';
+
+  html += '  <div class="form-field">';
   html += '    <label>Short Description</label>';
   html += '    <input class="form-input" id="f-description" type="text" value="' + esc(d.description) + '">';
   html += '  </div>';
@@ -558,26 +574,48 @@ function renderEditView() {
   html += '    <input class="form-input" id="f-wine" type="text" value="' + esc(d.wine) + '">';
   html += '  </div>';
 
+  // Equipment List
   html += '  <div class="form-field">';
-  html += '    <label>Equipment / Mise-en-place (One per input)</label>';
+  html += '    <label>Equipment / Mise-en-place</label>';
+  html += '    <div id="equip-container">';
   (d.equipment || [""]).forEach(function(eq, idx) {
-    html += '    <div class="row-group"><input class="form-input equip-input" type="text" value="' + esc(eq) + '"></div>';
+    html += '    <div class="row-group"><input class="form-input equip-input" type="text" value="' + esc(eq) + '" placeholder="Equipment item"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
   });
+  html += '    </div>';
+  html += '    <button class="add-item-btn" data-action="add-equip">+ Add Equipment Item</button>';
   html += '  </div>';
 
+  // Ingredients List
   html += '  <div class="form-field">';
-  html += '    <label>Ingredients (One per input e.g. 300g Carnaroli rice)</label>';
+  html += '    <label>Ingredients</label>';
+  html += '    <div id="ing-container">';
   (d.ingredients || [""]).forEach(function(ing, idx) {
-    html += '    <div class="row-group"><input class="form-input ing-input" type="text" value="' + esc(ing) + '"></div>';
+    html += '    <div class="row-group"><input class="form-input ing-input" type="text" value="' + esc(ing) + '" placeholder="e.g. 300g Carnaroli rice"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
   });
+  html += '    </div>';
+  html += '    <button class="add-item-btn" data-action="add-ingredient">+ Add Ingredient</button>';
   html += '  </div>';
 
+  // Method Steps List with Image URL & Timer syntax
   html += '  <div class="form-field">';
-  html += '    <label>Method Steps (Include e.g. [timer: 15m] for auto timers)</label>';
-  (d.steps || [{text:""}]).forEach(function(s, idx) {
-    var txt = typeof s === "string" ? s : s.text;
-    html += '    <div class="row-group"><textarea class="form-textarea step-input" rows="2">' + esc(txt) + '</textarea></div>';
+  html += '    <label>Method Steps & Step Images</label>';
+  html += '    <div id="steps-container">';
+  (d.steps || [{text:"", image:""}]).forEach(function(s, idx) {
+    var txt = typeof s === "string" ? s : (s ? s.text : "");
+    var img = typeof s === "object" && s ? (s.image || "") : "";
+    html += '    <div class="step-card-edit">';
+    html += '      <div class="step-card-edit-header">';
+    html += '        <span>Step ' + (idx + 1) + '</span>';
+    html += '        <button class="row-remove-btn" data-action="remove-step-card">Remove Step ✕</button>';
+    html += '      </div>';
+    html += '      <textarea class="form-textarea step-text-input" rows="2" placeholder="Step instructions... (e.g. Braise for 25 minutes [timer: 25m])">' + esc(txt) + '</textarea>';
+    html += '      <div style="margin-top:8px;">';
+    html += '        <input class="form-input step-img-input" type="text" value="' + esc(img) + '" placeholder="Optional Step Image URL (https://...)">';
+    html += '      </div>';
+    html += '    </div>';
   });
+  html += '    </div>';
+  html += '    <button class="add-item-btn" data-action="add-step">+ Add Cooking Step</button>';
   html += '  </div>';
 
   html += '</div>';
@@ -663,8 +701,39 @@ document.addEventListener("click", function(e) {
       state.cookingStepIdx--;
       renderApp();
     }
+  } else if (action === "add-equip") {
+    var container = document.getElementById("equip-container");
+    if (container) {
+      var div = document.createElement("div");
+      div.className = "row-group";
+      div.innerHTML = '<input class="form-input equip-input" type="text" placeholder="Equipment item"><button class="row-remove-btn" data-action="remove-row">✕</button>';
+      container.appendChild(div);
+    }
+  } else if (action === "add-ingredient") {
+    var container = document.getElementById("ing-container");
+    if (container) {
+      var div = document.createElement("div");
+      div.className = "row-group";
+      div.innerHTML = '<input class="form-input ing-input" type="text" placeholder="e.g. 300g Carnaroli rice"><button class="row-remove-btn" data-action="remove-row">✕</button>';
+      container.appendChild(div);
+    }
+  } else if (action === "add-step") {
+    var container = document.getElementById("steps-container");
+    if (container) {
+      var stepNum = container.querySelectorAll(".step-card-edit").length + 1;
+      var div = document.createElement("div");
+      div.className = "step-card-edit";
+      div.innerHTML = '<div class="step-card-edit-header"><span>Step ' + stepNum + '</span><button class="row-remove-btn" data-action="remove-step-card">Remove Step ✕</button></div><textarea class="form-textarea step-text-input" rows="2" placeholder="Step instructions... (e.g. Braise for 25 minutes [timer: 25m])"></textarea><div style="margin-top:8px;"><input class="form-input step-img-input" type="text" placeholder="Optional Step Image URL (https://...)"></div>';
+      container.appendChild(div);
+    }
+  } else if (action === "remove-row") {
+    var row = target.closest(".row-group");
+    if (row) row.remove();
+  } else if (action === "remove-step-card") {
+    var card = target.closest(".step-card-edit");
+    if (card) card.remove();
   } else if (action === "new-recipe") {
-    state.draft = { title: "", category: "Mains", servings: 2, time: "30 min", description: "", wine: "", equipment: [""], ingredients: [""], steps: [{text:""}] };
+    state.draft = { title: "", category: "Mains", servings: 2, time: "30 min", description: "", wine: "", photo: "", equipment: [""], ingredients: [""], steps: [{text:"", image:""}] };
     state.view = "edit";
     renderApp();
   } else if (action === "edit-recipe") {
@@ -682,24 +751,33 @@ document.addEventListener("click", function(e) {
     var cat = document.getElementById("f-category").value || "Mains";
     var serv = parseInt(document.getElementById("f-servings").value) || 2;
     var time = document.getElementById("f-time").value || "30 min";
+    var photo = document.getElementById("f-photo") ? document.getElementById("f-photo").value : "";
     var desc = document.getElementById("f-description").value || "";
     var wine = document.getElementById("f-wine").value || "";
 
     var equip = Array.from(document.querySelectorAll(".equip-input")).map(function(i){ return i.value; }).filter(Boolean);
     var ing = Array.from(document.querySelectorAll(".ing-input")).map(function(i){ return i.value; }).filter(Boolean);
-    var steps = Array.from(document.querySelectorAll(".step-input")).map(function(i){ return { text: i.value }; }).filter(function(s){ return s.text; });
+
+    var stepCards = Array.from(document.querySelectorAll(".step-card-edit"));
+    var steps = stepCards.map(function(card) {
+      var txtInput = card.querySelector(".step-text-input");
+      var imgInput = card.querySelector(".step-img-input");
+      var txt = txtInput ? txtInput.value : "";
+      var img = imgInput ? imgInput.value : "";
+      return { text: txt, image: img };
+    }).filter(function(s){ return s.text; });
 
     if (state.draft && state.draft.id) {
       var idx = state.recipes.findIndex(function(x){ return x.id === state.draft.id; });
       if (idx !== -1) {
         state.recipes[idx] = Object.assign(state.recipes[idx], {
-          title: title, category: cat, servings: serv, time: time, description: desc, wine: wine, equipment: equip, ingredients: ing, steps: steps
+          title: title, category: cat, servings: serv, time: time, photo: photo, description: desc, wine: wine, equipment: equip, ingredients: ing, steps: steps
         });
       }
     } else {
       var newR = {
         id: "recipe-" + Date.now(),
-        title: title, category: cat, servings: serv, time: time, description: desc, wine: wine, equipment: equip, ingredients: ing, steps: steps, stars: 3
+        title: title, category: cat, servings: serv, time: time, photo: photo, description: desc, wine: wine, equipment: equip, ingredients: ing, steps: steps, stars: 3
       };
       state.recipes.unshift(newR);
       state.activeId = newR.id;
@@ -741,6 +819,28 @@ document.addEventListener("click", function(e) {
       a.href = URL.createObjectURL(blob);
       a.download = r.title.toLowerCase().replace(/\s+/g, "-") + ".txt";
       a.click();
+    }
+  } else if (action === "export-png") {
+    var detailEl = document.querySelector(".detail-card");
+    if (detailEl && window.html2canvas) {
+      window.html2canvas(detailEl, { scale: 2, useCORS: true, backgroundColor: "#0f0c09" }).then(function(canvas) {
+        var link = document.createElement("a");
+        link.download = (state.activeId || "recipe") + ".png";
+        link.href = canvas.toDataURL("image/png");
+        link.click();
+      });
+    }
+  } else if (action === "export-pdf") {
+    var detailEl = document.querySelector(".detail-card");
+    if (detailEl && window.html2canvas && window.jspdf) {
+      window.html2canvas(detailEl, { scale: 2, useCORS: true, backgroundColor: "#0f0c09" }).then(function(canvas) {
+        var imgData = canvas.toDataURL("image/png");
+        var pdf = new window.jspdf.jsPDF("p", "mm", "a4");
+        var imgWidth = 210;
+        var imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
+        pdf.save((state.activeId || "recipe") + ".pdf");
+      });
     }
   }
 });
