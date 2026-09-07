@@ -134,6 +134,11 @@ function allCategories() {
   state.recipes.forEach(function(r) {
     if (r.category) set[r.category] = true;
   });
+  if (state.customCategories && Array.isArray(state.customCategories)) {
+    state.customCategories.forEach(function(c) {
+      if (c) set[c] = true;
+    });
+  }
   return Object.keys(set).sort();
 }
 
@@ -252,24 +257,38 @@ function renderApp() {
   html += '    <div class="brand-subtitle">Michelin Culinary Guide</div>';
   html += '  </div>';
 
-  html += '  <div class="theme-switcher">';
-  html += '    <button class="theme-btn ' + (state.theme === "chocolate-nero" ? "active" : "") + '" data-action="set-theme" data-theme="chocolate-nero">🍫 Chocolate</button>';
-  html += '    <button class="theme-btn ' + (state.theme === "metal-navy" ? "active" : "") + '" data-action="set-theme" data-theme="metal-navy">⚡ Navy Steel</button>';
+  html += '  <div class="theme-select-wrap">';
+  html += '    <label class="theme-select-label">Aesthetic Palette</label>';
+  html += '    <select class="theme-select" id="theme-selector">';
+  html += '      <option value="chocolate-nero" ' + (state.theme === "chocolate-nero" ? "selected" : "") + '>🍫 Chocolate & Nero</option>';
+  html += '      <option value="metal-navy" ' + (state.theme === "metal-navy" ? "selected" : "") + '>⚡ Metal & Navy Sapphire</option>';
+  html += '      <option value="emerald-gold" ' + (state.theme === "emerald-gold" ? "selected" : "") + '>💎 Imperial Emerald & Gold</option>';
+  html += '      <option value="bordeaux-velvet" ' + (state.theme === "bordeaux-velvet" ? "selected" : "") + '>🍷 Bordeaux Velvet</option>';
+  html += '      <option value="champagne-obsidian" ' + (state.theme === "champagne-obsidian" ? "selected" : "") + '>🥂 Champagne Obsidian</option>';
+  html += '    </select>';
   html += '  </div>';
 
   html += '  <input class="search-input" id="search-box" type="text" placeholder="Search culinary guide..." value="' + esc(state.searchQuery) + '">';
   html += '  <button class="new-recipe-btn" data-action="new-recipe">+ New Recipe</button>';
 
+  html += '  <div class="cat-section-header">';
+  html += '    <span>Categories</span>';
+  html += '    <button class="cat-add-btn" data-action="add-category" title="Add New Category">+</button>';
+  html += '  </div>';
+
   html += '  <div class="nav-categories">';
   html += '    <div class="nav-item ' + (state.activeCategory === "All" ? "active" : "") + '" data-action="set-cat" data-cat="All">';
-  html += '      <span>All Creations</span>';
+  html += '      <div class="nav-item-left"><span>All Creations</span></div>';
   html += '      <span class="cat-count">' + state.recipes.length + '</span>';
   html += '    </div>';
 
   allCategories().forEach(function(c) {
     var cnt = state.recipes.filter(function(r){ return r.category === c; }).length;
     html += '    <div class="nav-item ' + (state.activeCategory === c ? "active" : "") + '" data-action="set-cat" data-cat="' + esc(c) + '">';
-    html += '      <span>' + esc(c) + '</span>';
+    html += '      <div class="nav-item-left">';
+    html += '        <span>' + esc(c) + '</span>';
+    html += '        <span class="cat-edit-icon" data-action="edit-category" data-cat="' + esc(c) + '" title="Rename Category">✏️</span>';
+    html += '      </div>';
     html += '      <span class="cat-count">' + cnt + '</span>';
     html += '    </div>';
   });
@@ -584,10 +603,35 @@ document.addEventListener("click", function(e) {
 
   var action = target.getAttribute("data-action");
 
-  if (action === "set-theme") {
-    state.theme = target.getAttribute("data-theme");
-    localStorage.setItem("carte_theme", state.theme);
-    renderApp();
+  if (action === "add-category") {
+    var newCat = prompt("Enter new category name:");
+    if (newCat && newCat.trim()) {
+      newCat = newCat.trim();
+      if (!state.customCategories) state.customCategories = [];
+      if (state.customCategories.indexOf(newCat) === -1) {
+        state.customCategories.push(newCat);
+      }
+      state.activeCategory = newCat;
+      saveState();
+      renderApp();
+    }
+  } else if (action === "edit-category") {
+    e.stopPropagation();
+    var oldCat = target.getAttribute("data-cat");
+    var renamed = prompt("Rename category '" + oldCat + "' to:", oldCat);
+    if (renamed && renamed.trim() && renamed.trim() !== oldCat) {
+      renamed = renamed.trim();
+      state.recipes.forEach(function(r) {
+        if (r.category === oldCat) {
+          r.category = renamed;
+        }
+      });
+      if (state.activeCategory === oldCat) {
+        state.activeCategory = renamed;
+      }
+      saveStoredRecipes();
+      renderApp();
+    }
   } else if (action === "set-cat") {
     state.activeCategory = target.getAttribute("data-cat");
     state.view = "list";
@@ -682,7 +726,8 @@ document.addEventListener("click", function(e) {
     var card = target.closest(".step-card-edit");
     if (card) card.remove();
   } else if (action === "new-recipe") {
-    state.draft = { title: "", category: "Mains", servings: 2, time: "30 min", description: "", wine: "", photo: "", equipment: [""], ingredients: [""], steps: [{text:"", image:""}] };
+    var defaultCat = (state.activeCategory && state.activeCategory !== "All") ? state.activeCategory : "Mains";
+    state.draft = { title: "", category: defaultCat, servings: 2, time: "30 min", description: "", wine: "", photo: "", equipment: [""], ingredients: [""], steps: [{text:"", image:""}] };
     state.view = "edit";
     renderApp();
   } else if (action === "edit-recipe") {
@@ -771,7 +816,14 @@ document.addEventListener("click", function(e) {
   } else if (action === "export-png") {
     var detailEl = document.querySelector(".detail-card");
     if (detailEl && window.html2canvas) {
-      var bg = state.theme === "metal-navy" ? "#0b101d" : "#120d0c";
+      var bgMap = {
+        "chocolate-nero": "#120d0c",
+        "metal-navy": "#0b101d",
+        "emerald-gold": "#0a1712",
+        "bordeaux-velvet": "#170a0e",
+        "champagne-obsidian": "#141414"
+      };
+      var bg = bgMap[state.theme] || "#120d0c";
       window.html2canvas(detailEl, { scale: 2, backgroundColor: bg }).then(function(canvas) {
         var link = document.createElement("a");
         link.download = (state.activeId || "recipe") + ".png";
@@ -782,7 +834,14 @@ document.addEventListener("click", function(e) {
   } else if (action === "export-pdf") {
     var detailEl = document.querySelector(".detail-card");
     if (detailEl && window.html2canvas && window.jspdf) {
-      var bg = state.theme === "metal-navy" ? "#0b101d" : "#120d0c";
+      var bgMap = {
+        "chocolate-nero": "#120d0c",
+        "metal-navy": "#0b101d",
+        "emerald-gold": "#0a1712",
+        "bordeaux-velvet": "#170a0e",
+        "champagne-obsidian": "#141414"
+      };
+      var bg = bgMap[state.theme] || "#120d0c";
       window.html2canvas(detailEl, { scale: 2, backgroundColor: bg }).then(function(canvas) {
         var imgData = canvas.toDataURL("image/png");
         var pdf = new window.jspdf.jsPDF("p", "mm", "a4");
@@ -817,6 +876,15 @@ document.addEventListener("change", function(e) {
   };
 
   reader.readAsDataURL(file);
+});
+
+document.addEventListener("change", function(e) {
+  if (e.target && e.target.id === "theme-selector") {
+    state.theme = e.target.value;
+    localStorage.setItem("carte_theme", state.theme);
+    renderApp();
+    return;
+  }
 });
 
 document.addEventListener("input", function(e) {

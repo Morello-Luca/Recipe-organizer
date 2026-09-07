@@ -47,6 +47,69 @@
   --danger-bg: rgba(248, 113, 113, 0.15);
 }
 
+/* Palette 3: Imperial Emerald & Gold */
+[data-theme="emerald-gold"] {
+  --bg-main: #0a1712;
+  --bg-card: #12241d;
+  --bg-sidebar: #060e0b;
+  --bg-overlay: rgba(6, 14, 11, 0.92);
+  --bg-hover: #1b3329;
+  --bg-input: #0e1c17;
+  --text-main: #e8f3ee;
+  --text-muted: #8eaba0;
+  --text-accent: #34d399;
+  --accent-gold: #34d399;
+  --accent-gold-hover: #6ee7b7;
+  --border-color: rgba(52, 211, 153, 0.22);
+  --border-light: rgba(52, 211, 153, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.7);
+  --badge-bg: rgba(52, 211, 153, 0.12);
+  --danger-color: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.15);
+}
+
+/* Palette 4: Bordeaux Velvet */
+[data-theme="bordeaux-velvet"] {
+  --bg-main: #170a0e;
+  --bg-card: #261218;
+  --bg-sidebar: #0e0508;
+  --bg-overlay: rgba(14, 5, 8, 0.92);
+  --bg-hover: #361a23;
+  --bg-input: #1f0e14;
+  --text-main: #fceef2;
+  --text-muted: #c49ea9;
+  --text-accent: #fb7185;
+  --accent-gold: #fb7185;
+  --accent-gold-hover: #f43f5e;
+  --border-color: rgba(251, 113, 133, 0.22);
+  --border-light: rgba(251, 113, 133, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.7);
+  --badge-bg: rgba(251, 113, 133, 0.12);
+  --danger-color: #f87171;
+  --danger-bg: rgba(248, 113, 113, 0.15);
+}
+
+/* Palette 5: Champagne Obsidian */
+[data-theme="champagne-obsidian"] {
+  --bg-main: #141414;
+  --bg-card: #1f1f1f;
+  --bg-sidebar: #0d0d0d;
+  --bg-overlay: rgba(13, 13, 13, 0.92);
+  --bg-hover: #2d2d2d;
+  --bg-input: #181818;
+  --text-main: #f5f5f0;
+  --text-muted: #a3a39e;
+  --text-accent: #f59e0b;
+  --accent-gold: #f59e0b;
+  --accent-gold-hover: #fbbf24;
+  --border-color: rgba(245, 158, 11, 0.22);
+  --border-light: rgba(245, 158, 11, 0.1);
+  --shadow-color: rgba(0, 0, 0, 0.7);
+  --badge-bg: rgba(245, 158, 11, 0.12);
+  --danger-color: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.15);
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
@@ -103,38 +166,35 @@ body {
   color: var(--text-muted);
 }
 
-.theme-switcher {
-  display: flex;
-  gap: 8px;
+.theme-select-wrap {
   margin-bottom: 24px;
-  background: var(--bg-card);
-  padding: 4px;
-  border-radius: 8px;
-  border: 1px solid var(--border-color);
 }
 
-.theme-btn {
-  flex: 1;
-  padding: 8px 10px;
-  font-size: 11px;
-  font-weight: 600;
+.theme-select-label {
+  font-size: 10px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  letter-spacing: 1px;
-  border: none;
-  background: transparent;
   color: var(--text-muted);
+  margin-bottom: 6px;
+  display: block;
+}
+
+.theme-select {
+  width: 100%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-main);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
-  border-radius: 6px;
-  transition: all 0.2s ease;
+  outline: none;
 }
 
-.theme-btn.active {
-  background: var(--text-accent);
-  color: #0c0807;
-}
-
-[data-theme="metal-navy"] .theme-btn.active {
-  color: #070b14;
+.theme-select option {
+  background: var(--bg-sidebar);
+  color: var(--text-main);
 }
 
 .search-input {
@@ -164,6 +224,26 @@ body {
   margin-bottom: 24px;
 }
 
+.cat-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.cat-add-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-accent);
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+}
+
 .nav-categories {
   flex: 1;
   overflow-y: auto;
@@ -179,6 +259,28 @@ body {
   color: var(--text-muted);
   font-size: 13px;
   margin-bottom: 4px;
+  group: relative;
+}
+
+.nav-item-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.cat-edit-icon {
+  opacity: 0;
+  font-size: 11px;
+  color: var(--text-muted);
+  transition: opacity 0.2s ease;
+}
+
+.nav-item:hover .cat-edit-icon {
+  opacity: 1;
+}
+
+.cat-edit-icon:hover {
+  color: var(--text-accent);
 }
 
 .nav-item:hover, .nav-item.active {
