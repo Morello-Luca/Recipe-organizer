@@ -108,6 +108,7 @@ var state = {
   servingMultiplier: 1,
   view: "list",
   draft: null,
+  editTab: "general",
   cookingStepIdx: 0,
   activeTimer: null
 };
@@ -122,6 +123,9 @@ function loadStoredRecipes() {
 
 function saveStoredRecipes() {
   localStorage.setItem("carte_recipes_v4", JSON.stringify(state.recipes));
+  if (state.customCategories) {
+    localStorage.setItem("carte_custom_categories", JSON.stringify(state.customCategories));
+  }
 }
 
 function esc(str) {
@@ -512,77 +516,156 @@ function renderCookingView() {
 }
 
 // Redesigned Clean & Compact Recipe Edit Form
+function syncDraftFromDOM() {
+  if (!state.draft) return;
+  var titleEl = document.getElementById("f-title");
+  if (titleEl) state.draft.title = titleEl.value;
+  var catEl = document.getElementById("f-category");
+  if (catEl) state.draft.category = catEl.value;
+  var servEl = document.getElementById("f-servings");
+  if (servEl) state.draft.servings = parseInt(servEl.value) || 2;
+  var timeEl = document.getElementById("f-time");
+  if (timeEl) state.draft.time = timeEl.value;
+  var photoEl = document.getElementById("f-photo");
+  if (photoEl) state.draft.photo = photoEl.value;
+  var descEl = document.getElementById("f-description");
+  if (descEl) state.draft.description = descEl.value;
+  var wineEl = document.getElementById("f-wine");
+  if (wineEl) state.draft.wine = wineEl.value;
+
+  var equipInputs = document.querySelectorAll(".equip-input");
+  if (equipInputs.length > 0) {
+    state.draft.equipment = Array.from(equipInputs).map(function(i){ return i.value; });
+  }
+  var ingInputs = document.querySelectorAll(".ing-input");
+  if (ingInputs.length > 0) {
+    state.draft.ingredients = Array.from(ingInputs).map(function(i){ return i.value; });
+  }
+  var stepCards = document.querySelectorAll(".step-card-edit");
+  if (stepCards.length > 0) {
+    state.draft.steps = Array.from(stepCards).map(function(card) {
+      var txtInput = card.querySelector(".step-text-input");
+      var imgInput = card.querySelector(".step-img-input");
+      return {
+        text: txtInput ? txtInput.value : "",
+        image: imgInput ? imgInput.value : ""
+      };
+    });
+  }
+}
+
 function renderEditView() {
   var d = state.draft || {};
-  var html = '<div class="toolbar">';
-  html += '  <button class="tbtn" data-action="cancel-edit">← Cancel</button>';
-  html += '  <button class="tbtn primary" data-action="save-recipe">Save Recipe</button>';
-  html += '</div>';
+  var currentTab = state.editTab || "general";
 
-  html += '<div class="form-wrap">';
-  html += '  <h2 style="font-family:var(--font-serif); font-size:20px; color:var(--text-accent); margin-bottom:20px;">' + (d.id ? "Edit Recipe" : "New Recipe") + '</h2>';
+  var html = '<div class="editor-wizard">';
 
-  html += '  <div class="form-field">';
-  html += '    <label>Recipe Title</label>';
-  html += '    <input class="form-input" id="f-title" type="text" value="' + esc(d.title) + '" placeholder="Title">';
-  html += '  </div>';
-
-  html += '  <div class="form-grid-3 form-field">';
-  html += '    <div><label>Category</label><input class="form-input" id="f-category" type="text" value="' + esc(d.category || "Mains") + '"></div>';
-  html += '    <div><label>Servings</label><input class="form-input" id="f-servings" type="number" value="' + (d.servings || 2) + '"></div>';
-  html += '    <div><label>Time</label><input class="form-input" id="f-time" type="text" value="' + esc(d.time || "45 min") + '"></div>';
-  html += '  </div>';
-
-  html += '  <div class="form-field">';
-  html += '    <label>Cover Photo</label>';
-  html += '    <div style="display:flex; gap:8px; align-items:center;">';
-  html += '      <input class="form-input" id="f-photo" type="text" value="' + esc(d.photo || "") + '" placeholder="URL or choose local image...">';
-  html += '      <label class="tbtn" style="cursor:pointer; white-space:nowrap;">📁 Browse <input type="file" accept="image/*" class="file-picker" data-target-id="f-photo" style="display:none;"></label>';
+  // Header
+  html += '  <div class="editor-header">';
+  html += '    <div class="editor-title-wrap">';
+  html += '      <h2>' + (d.id ? "Edit Creation Studio" : "New Creation Studio") + '</h2>';
+  html += '      <div class="editor-subtitle">' + esc(d.title || "Untitled Masterpiece") + '</div>';
+  html += '    </div>';
+  html += '    <div style="display:flex; gap:8px;">';
+  html += '      <button class="tbtn" data-action="cancel-edit">← Cancel</button>';
+  html += '      <button class="tbtn primary" data-action="save-recipe">Save Creation</button>';
   html += '    </div>';
   html += '  </div>';
-  html += '  <div class="form-field"><label>Short Description</label><input class="form-input" id="f-description" type="text" value="' + esc(d.description) + '"></div>';
-  html += '  <div class="form-field"><label>Sommelier Wine Pairing</label><input class="form-input" id="f-wine" type="text" value="' + esc(d.wine) + '"></div>';
 
-  html += '  <div class="form-field">';
-  html += '    <label>Equipment / Mise-en-place</label>';
-  html += '    <div id="equip-container">';
-  (d.equipment || [""]).forEach(function(eq) {
-    html += '    <div class="row-group"><input class="form-input equip-input" type="text" value="' + esc(eq) + '" placeholder="Equipment item"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
-  });
-  html += '    </div>';
-  html += '    <button class="add-item-btn" data-action="add-equip">+ Add Item</button>';
+  // Wizard Tabs
+  html += '  <div class="editor-tabs">';
+  html += '    <button class="tab-btn ' + (currentTab === "general" ? "active" : "") + '" data-action="switch-editor-tab" data-tab="general">1. General Info & Pairing</button>';
+  html += '    <button class="tab-btn ' + (currentTab === "mise" ? "active" : "") + '" data-action="switch-editor-tab" data-tab="mise">2. Mise-en-Place & Ingredients</button>';
+  html += '    <button class="tab-btn ' + (currentTab === "method" ? "active" : "") + '" data-action="switch-editor-tab" data-tab="method">3. Culinary Method</button>';
   html += '  </div>';
 
-  html += '  <div class="form-field">';
-  html += '    <label>Ingredients</label>';
-  html += '    <div id="ing-container">';
-  (d.ingredients || [""]).forEach(function(ing) {
-    html += '    <div class="row-group"><input class="form-input ing-input" type="text" value="' + esc(ing) + '" placeholder="Ingredient"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
-  });
-  html += '    </div>';
-  html += '    <button class="add-item-btn" data-action="add-ingredient">+ Add Ingredient</button>';
-  html += '  </div>';
+  // Body
+  html += '  <div class="editor-body">';
 
-  html += '  <div class="form-field">';
-  html += '    <label>Method Steps & Step Images</label>';
-  html += '    <div id="steps-container">';
-  (d.steps || [{text:"", image:""}]).forEach(function(s, idx) {
-    var txt = typeof s === "string" ? s : (s ? s.text : "");
-    var img = typeof s === "object" && s ? (s.image || "") : "";
-    html += '    <div class="step-card-edit">';
-    html += '      <div class="step-card-edit-header"><span>Step ' + (idx + 1) + '</span><button class="row-remove-btn" data-action="remove-step-card">✕</button></div>';
-    html += '      <textarea class="form-textarea step-text-input" rows="2" placeholder="Step instructions...">' + esc(txt) + '</textarea>';
-    html += '      <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">';
-    html += '        <input class="form-input step-img-input" type="text" value="' + esc(img) + '" placeholder="Optional Step Image URL or choose local file...">';
-    html += '        <label class="tbtn" style="cursor:pointer; white-space:nowrap;">📁 Browse <input type="file" accept="image/*" class="file-picker-step" style="display:none;"></label>';
+  if (currentTab === "general") {
+    html += '    <div class="form-field">';
+    html += '      <label>Recipe Title</label>';
+    html += '      <input class="form-input" id="f-title" type="text" value="' + esc(d.title) + '" placeholder="e.g. Pan-Seared Duck Breast">';
+    html += '    </div>';
+
+    html += '    <div class="form-grid-3 form-field">';
+    html += '      <div><label>Category</label><input class="form-input" id="f-category" type="text" value="' + esc(d.category || "Mains") + '"></div>';
+    html += '      <div><label>Servings</label><input class="form-input" id="f-servings" type="number" value="' + (d.servings || 2) + '"></div>';
+    html += '      <div><label>Prep / Cook Time</label><input class="form-input" id="f-time" type="text" value="' + esc(d.time || "45 min") + '"></div>';
+    html += '    </div>';
+
+    html += '    <div class="form-field">';
+    html += '      <label>Cover Photo</label>';
+    html += '      <div style="display:flex; gap:8px; align-items:center;">';
+    html += '        <input class="form-input" id="f-photo" type="text" value="' + esc(d.photo || "") + '" placeholder="URL or choose local image...">';
+    html += '        <label class="tbtn" style="cursor:pointer; white-space:nowrap;">📁 Browse <input type="file" accept="image/*" class="file-picker" data-target-id="f-photo" style="display:none;"></label>';
     html += '      </div>';
     html += '    </div>';
-  });
-  html += '    </div>';
-  html += '    <button class="add-item-btn" data-action="add-step">+ Add Step</button>';
+
+    html += '    <div class="form-field"><label>Short Gastronomic Description</label><input class="form-input" id="f-description" type="text" value="' + esc(d.description) + '" placeholder="A brief poetic summary of the dish..."></div>';
+    html += '    <div class="form-field"><label>Sommelier Wine Pairing</label><input class="form-input" id="f-wine" type="text" value="' + esc(d.wine) + '" placeholder="e.g. Pinot Noir, Burgundy 2018"></div>';
+  }
+  else if (currentTab === "mise") {
+    html += '    <div class="form-field">';
+    html += '      <label style="color:var(--text-accent); font-weight:bold; margin-bottom:8px; display:block;">Equipment & Tools (Mise-en-Place)</label>';
+    html += '      <div id="equip-container">';
+    (d.equipment && d.equipment.length ? d.equipment : [""]).forEach(function(eq) {
+      html += '      <div class="row-group"><input class="form-input equip-input" type="text" value="' + esc(eq) + '" placeholder="e.g. Copper Saute Pan, Digital Probe Thermometer"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
+    });
+    html += '      </div>';
+    html += '      <button class="add-item-btn" data-action="add-equip">+ Add Tool</button>';
+    html += '    </div>';
+
+    html += '    <hr style="border:0; border-top:1px solid var(--border-color); margin:24px 0;">';
+
+    html += '    <div class="form-field">';
+    html += '      <label style="color:var(--text-accent); font-weight:bold; margin-bottom:8px; display:block;">Ingredients & Quantities</label>';
+    html += '      <div id="ing-container">';
+    (d.ingredients && d.ingredients.length ? d.ingredients : [""]).forEach(function(ing) {
+      html += '      <div class="row-group"><input class="form-input ing-input" type="text" value="' + esc(ing) + '" placeholder="e.g. 250g Duck Breast or 1 tbsp Fleur de Sel"><button class="row-remove-btn" data-action="remove-row">✕</button></div>';
+    });
+    html += '      </div>';
+    html += '      <button class="add-item-btn" data-action="add-ingredient">+ Add Ingredient</button>';
+    html += '    </div>';
+  }
+  else if (currentTab === "method") {
+    html += '    <div class="form-field">';
+    html += '      <label style="color:var(--text-accent); font-weight:bold; margin-bottom:8px; display:block;">Preparation Steps & Technique</label>';
+    html += '      <div id="steps-container">';
+    (d.steps && d.steps.length ? d.steps : [{text:"", image:""}]).forEach(function(s, idx) {
+      var txt = typeof s === "string" ? s : (s ? s.text : "");
+      var img = typeof s === "object" && s ? (s.image || "") : "";
+      html += '      <div class="step-card-edit">';
+      html += '        <div class="step-card-edit-header"><span>Step ' + (idx + 1) + '</span><button class="row-remove-btn" data-action="remove-step-card">✕</button></div>';
+      html += '        <textarea class="form-textarea step-text-input" rows="2" placeholder="Describe the culinary technique or process...">' + esc(txt) + '</textarea>';
+      html += '        <div style="margin-top:8px; display:flex; gap:8px; align-items:center;">';
+      html += '          <input class="form-input step-img-input" type="text" value="' + esc(img) + '" placeholder="Optional Step Image URL or choose local file...">';
+      html += '          <label class="tbtn" style="cursor:pointer; white-space:nowrap;">📁 Browse <input type="file" accept="image/*" class="file-picker-step" style="display:none;"></label>';
+      html += '        </div>';
+      html += '      </div>';
+    });
+    html += '      </div>';
+    html += '      <button class="add-item-btn" data-action="add-step">+ Add Step</button>';
+    html += '    </div>';
+  }
+
+  html += '  </div>'; // .editor-body
+
+  // Footer Navigation
+  html += '  <div class="editor-footer">';
+  if (currentTab === "general") {
+    html += '    <div></div>';
+    html += '    <button class="tbtn primary" data-action="switch-editor-tab" data-tab="mise">Next: Mise-en-Place →</button>';
+  } else if (currentTab === "mise") {
+    html += '    <button class="tbtn" data-action="switch-editor-tab" data-tab="general">← General Info</button>';
+    html += '    <button class="tbtn primary" data-action="switch-editor-tab" data-tab="method">Next: Method Steps →</button>';
+  } else {
+    html += '    <button class="tbtn" data-action="switch-editor-tab" data-tab="mise">← Mise-en-Place</button>';
+    html += '    <button class="tbtn primary" data-action="save-recipe">Finish & Save Creation</button>';
+  }
   html += '  </div>';
 
-  html += '</div>';
+  html += '</div>'; // .editor-wizard
   return html;
 }
 
@@ -612,7 +695,7 @@ document.addEventListener("click", function(e) {
         state.customCategories.push(newCat);
       }
       state.activeCategory = newCat;
-      saveState();
+      saveStoredRecipes();
       renderApp();
     }
   } else if (action === "edit-category") {
@@ -725,15 +808,21 @@ document.addEventListener("click", function(e) {
   } else if (action === "remove-step-card") {
     var card = target.closest(".step-card-edit");
     if (card) card.remove();
+  } else if (action === "switch-editor-tab") {
+    syncDraftFromDOM();
+    state.editTab = target.getAttribute("data-tab");
+    renderApp();
   } else if (action === "new-recipe") {
     var defaultCat = (state.activeCategory && state.activeCategory !== "All") ? state.activeCategory : "Mains";
     state.draft = { title: "", category: defaultCat, servings: 2, time: "30 min", description: "", wine: "", photo: "", equipment: [""], ingredients: [""], steps: [{text:"", image:""}] };
+    state.editTab = "general";
     state.view = "edit";
     renderApp();
   } else if (action === "edit-recipe") {
     var r = findRecipe(state.activeId);
     if (r) {
       state.draft = JSON.parse(JSON.stringify(r));
+      state.editTab = "general";
       state.view = "edit";
       renderApp();
     }
@@ -741,25 +830,19 @@ document.addEventListener("click", function(e) {
     state.view = state.activeId ? "detail" : "list";
     renderApp();
   } else if (action === "save-recipe") {
-    var title = document.getElementById("f-title").value || "Untitled Creation";
-    var cat = document.getElementById("f-category").value || "Mains";
-    var serv = parseInt(document.getElementById("f-servings").value) || 2;
-    var time = document.getElementById("f-time").value || "30 min";
-    var photo = document.getElementById("f-photo") ? document.getElementById("f-photo").value : "";
-    var desc = document.getElementById("f-description").value || "";
-    var wine = document.getElementById("f-wine").value || "";
+    syncDraftFromDOM();
+    var d = state.draft || {};
+    var title = d.title || "Untitled Creation";
+    var cat = d.category || "Mains";
+    var serv = d.servings || 2;
+    var time = d.time || "30 min";
+    var photo = d.photo || "";
+    var desc = d.description || "";
+    var wine = d.wine || "";
 
-    var equip = Array.from(document.querySelectorAll(".equip-input")).map(function(i){ return i.value; }).filter(Boolean);
-    var ing = Array.from(document.querySelectorAll(".ing-input")).map(function(i){ return i.value; }).filter(Boolean);
-
-    var stepCards = Array.from(document.querySelectorAll(".step-card-edit"));
-    var steps = stepCards.map(function(card) {
-      var txtInput = card.querySelector(".step-text-input");
-      var imgInput = card.querySelector(".step-img-input");
-      var txt = txtInput ? txtInput.value : "";
-      var img = imgInput ? imgInput.value : "";
-      return { text: txt, image: img };
-    }).filter(function(s){ return s.text; });
+    var equip = (d.equipment || []).filter(Boolean);
+    var ing = (d.ingredients || []).filter(Boolean);
+    var steps = (d.steps || []).filter(function(s){ return s && (typeof s === "string" ? s : s.text); });
 
     if (state.draft && state.draft.id) {
       var idx = state.recipes.findIndex(function(x){ return x.id === state.draft.id; });
