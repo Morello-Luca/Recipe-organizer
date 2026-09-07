@@ -1,4 +1,4 @@
-/* CARTE - Michelin Culinary Guide - Compact, High-Density UX Styles */
+/* CARTE - Michelin Culinary Guide - Luxurious & Compact Modular CSS */
 :root {
   --font-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
   --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
@@ -26,7 +26,7 @@
   --danger-bg: rgba(229, 83, 83, 0.15);
 }
 
-/* Palette 2: Midnight Sapphire & Titanium Steel */
+/* Palette 2: Midnight Sapphire & Titanium Steel (Redesigned Navy Metal) */
 [data-theme="metal-navy"] {
   --bg-main: #0b101d;
   --bg-card: #131b2e;
@@ -58,73 +58,74 @@ body {
   color: var(--text-main);
   font-family: var(--font-body);
   display: flex;
-  height: 100vh;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #app-root {
   display: flex;
   width: 100%;
-  height: 100vh;
+  min-height: 100vh;
 }
 
 /* Sidebar */
 .sidebar {
-  width: 280px;
+  width: 300px;
   background-color: var(--bg-sidebar);
   border-right: 1px solid var(--border-color);
-  padding: 20px 16px;
+  padding: 28px 20px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  height: 100%;
 }
 
 .brand {
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .brand-title {
   font-family: var(--font-serif);
-  font-size: 22px;
-  letter-spacing: 3px;
+  font-size: 24px;
+  letter-spacing: 4px;
   color: var(--text-accent);
   text-transform: uppercase;
+  margin-bottom: 4px;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
 .brand-subtitle {
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-size: 10px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
 }
 
-/* Theme Switcher */
 .theme-switcher {
   display: flex;
-  gap: 6px;
-  margin-bottom: 16px;
+  gap: 8px;
+  margin-bottom: 24px;
   background: var(--bg-card);
-  padding: 3px;
-  border-radius: 6px;
+  padding: 4px;
+  border-radius: 8px;
   border: 1px solid var(--border-color);
 }
 
 .theme-btn {
   flex: 1;
-  padding: 6px 8px;
-  font-size: 10px;
+  padding: 8px 10px;
+  font-size: 11px;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 1px;
   border: none;
   background: transparent;
   color: var(--text-muted);
   cursor: pointer;
-  border-radius: 4px;
+  border-radius: 6px;
+  transition: all 0.2s ease;
 }
 
 .theme-btn.active {
@@ -141,26 +142,26 @@ body {
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  padding: 8px 12px;
+  padding: 10px 14px;
   border-radius: 6px;
-  font-size: 12px;
-  margin-bottom: 12px;
+  font-size: 13px;
+  margin-bottom: 20px;
   outline: none;
 }
 
 .new-recipe-btn {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background: var(--text-accent);
   color: #0c0807;
   border: none;
   border-radius: 6px;
   font-weight: 700;
-  font-size: 11px;
-  letter-spacing: 1px;
+  font-size: 12px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   cursor: pointer;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
 }
 
 .nav-categories {
@@ -172,12 +173,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 8px 10px;
+  padding: 10px 12px;
   border-radius: 6px;
   cursor: pointer;
   color: var(--text-muted);
-  font-size: 12px;
-  margin-bottom: 3px;
+  font-size: 13px;
+  margin-bottom: 4px;
 }
 
 .nav-item:hover, .nav-item.active {
@@ -187,48 +188,48 @@ body {
 }
 
 .cat-count {
-  font-size: 10px;
+  font-size: 11px;
   background: var(--badge-bg);
   color: var(--text-accent);
-  padding: 2px 6px;
-  border-radius: 10px;
+  padding: 2px 8px;
+  border-radius: 12px;
 }
 
 /* Main Content Area */
 .main-content {
   flex: 1;
-  padding: 20px 28px;
+  padding: 36px 48px;
   overflow-y: auto;
-  height: 100vh;
+  max-width: 1200px;
 }
 
-/* Dropdown Navigation */
+/* Dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
 }
 
 .dropdown-trigger {
-  padding: 6px 14px;
+  padding: 8px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-main);
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   right: 0;
-  min-width: 170px;
+  min-width: 180px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 6px;
-  box-shadow: 0 8px 20px var(--shadow-color);
-  padding: 4px 0;
+  border-radius: 8px;
+  box-shadow: 0 10px 25px var(--shadow-color);
+  padding: 6px 0;
   z-index: 100;
   display: none;
 }
@@ -240,13 +241,13 @@ body {
 .dropdown-item {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   width: 100%;
-  padding: 8px 12px;
+  padding: 10px 16px;
   background: transparent;
   border: none;
   color: var(--text-main);
-  font-size: 12px;
+  font-size: 13px;
   text-align: left;
   cursor: pointer;
 }
@@ -266,28 +267,28 @@ body {
   margin: 4px 0;
 }
 
-/* Compact Toolbar */
+/* Toolbar */
 .toolbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
-  gap: 10px;
+  margin-bottom: 28px;
+  gap: 12px;
 }
 
 .btn-group {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
 }
 
 .tbtn {
-  padding: 6px 14px;
+  padding: 8px 16px;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   color: var(--text-main);
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -307,9 +308,10 @@ body {
 }
 
 .unit-btn {
-  padding: 4px 10px;
-  font-size: 10px;
+  padding: 6px 12px;
+  font-size: 11px;
   font-weight: 600;
+  text-transform: uppercase;
   border: none;
   background: transparent;
   color: var(--text-muted);
@@ -321,69 +323,66 @@ body {
   color: var(--text-accent);
 }
 
-/* Compact Recipe Grid */
+/* Recipe Grid View */
 .recipe-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
 }
 
 .recipe-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   cursor: pointer;
   transition: transform 0.2s ease, border-color 0.2s ease;
 }
 
 .recipe-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
   border-color: var(--text-accent);
 }
 
 .card-img-wrap {
   width: 100%;
-  height: 140px;
+  height: 180px;
   background: var(--bg-input);
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.card-img-wrap svg, .card-img-wrap img {
+.card-img-wrap img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
 
 .card-body {
-  padding: 14px;
+  padding: 20px;
 }
 
 .card-category {
-  font-size: 9px;
-  letter-spacing: 1.5px;
+  font-size: 10px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-accent);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
   display: flex;
   justify-content: space-between;
 }
 
 .card-title {
   font-family: var(--font-serif);
-  font-size: 16px;
+  font-size: 18px;
   color: var(--text-main);
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 .card-desc {
-  font-size: 11px;
+  font-size: 12px;
   color: var(--text-muted);
-  line-height: 1.4;
-  margin-bottom: 10px;
+  line-height: 1.5;
+  margin-bottom: 16px;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -393,168 +392,155 @@ body {
 .card-meta {
   display: flex;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 11px;
   color: var(--text-muted);
   border-top: 1px solid var(--border-light);
-  padding-top: 8px;
+  padding-top: 12px;
 }
 
-/* Highly Integrated & Compact Recipe Detail View (Zero Dispersion UX) */
-.compact-detail-container {
-  display: grid;
-  grid-template-columns: 320px 1fr;
-  gap: 20px;
-  align-items: start;
-}
-
-.detail-summary-card {
+/* Grand 3-Star Michelin Recipe Detail View */
+.detail-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 16px 40px var(--shadow-color);
 }
 
-.detail-cover-wrapper {
-  width: 100%;
-  height: 180px;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 16px;
-  border: 1px solid var(--border-light);
-  background: var(--bg-input);
+.detail-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.detail-title {
+  font-family: var(--font-display);
+  font-size: 36px;
+  color: var(--text-main);
+  margin-bottom: 10px;
+}
+
+.detail-subtitle {
+  font-size: 15px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.detail-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.detail-cover-wrapper svg, .detail-cover-wrapper img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.detail-header-compact h1 {
-  font-family: var(--font-display);
-  font-size: 24px;
-  color: var(--text-main);
-  margin-bottom: 6px;
-  line-height: 1.2;
-}
-
-.detail-header-compact p {
-  font-size: 12px;
-  color: var(--text-muted);
-  font-style: italic;
-  margin-bottom: 14px;
-}
-
-.portion-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  gap: 20px;
   background: var(--bg-input);
-  padding: 8px 12px;
-  border-radius: 8px;
+  padding: 10px 20px;
+  border-radius: 30px;
   border: 1px solid var(--border-light);
-  margin-bottom: 16px;
-  font-size: 12px;
+  width: fit-content;
+  margin: 0 auto;
 }
 
 .portion-btn {
-  width: 24px;
-  height: 24px;
-  border-radius: 4px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
   border: 1px solid var(--border-color);
   background: var(--bg-card);
   color: var(--text-main);
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
 }
 
-.info-badge-card {
+.detail-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 36px;
+}
+
+.info-box {
   background: var(--bg-input);
   border: 1px solid var(--border-light);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 12px;
-}
-
-.info-badge-title {
-  font-size: 10px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  color: var(--text-accent);
-  margin-bottom: 6px;
-  font-weight: 700;
-}
-
-/* Tabbed / Compact Multi-Column Method View */
-.detail-main-pane {
-  background: var(--bg-card);
-  border: 1px solid var(--border-color);
   border-radius: 12px;
   padding: 20px;
 }
 
-.compact-tab-header {
-  display: flex;
-  border-bottom: 1px solid var(--border-color);
-  margin-bottom: 16px;
-  gap: 16px;
-}
-
-.tab-btn {
-  padding: 8px 4px;
-  border: none;
-  background: transparent;
-  color: var(--text-muted);
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 1px;
+.info-box-title {
+  font-size: 11px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  cursor: pointer;
-  border-bottom: 2px solid transparent;
-}
-
-.tab-btn.active {
   color: var(--text-accent);
-  border-bottom-color: var(--text-accent);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.ing-grid-compact {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+.checklist-item {
+  display: flex;
+  align-items: center;
   gap: 10px;
+  font-size: 13px;
+  margin-bottom: 8px;
+  cursor: pointer;
 }
 
-.ing-pill {
-  background: var(--bg-input);
-  border: 1px solid var(--border-light);
-  padding: 8px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: var(--text-main);
+.checklist-item input[type="checkbox"] {
+  accent-color: var(--text-accent);
 }
 
-.step-compact-list {
+.recipe-body-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 40px;
+  border-top: 1px solid var(--border-light);
+  padding-top: 36px;
+}
+
+.section-heading {
+  font-family: var(--font-serif);
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-accent);
+  margin-bottom: 20px;
+}
+
+.ing-list {
+  list-style: none;
+}
+
+.ing-item {
+  padding: 10px 0;
+  border-bottom: 1px dashed var(--border-light);
+  font-size: 14px;
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  justify-content: space-between;
 }
 
-.step-compact-card {
-  display: flex;
-  gap: 14px;
-  background: var(--bg-input);
-  border: 1px solid var(--border-light);
-  border-radius: 8px;
-  padding: 12px;
-  align-items: flex-start;
+.step-list {
+  list-style: none;
+  counter-reset: step-counter;
 }
 
-.step-num-pill {
-  width: 24px;
-  height: 24px;
+.step-item {
+  position: relative;
+  padding-left: 40px;
+  margin-bottom: 28px;
+  line-height: 1.6;
+  font-size: 14px;
+}
+
+.step-item::before {
+  counter-increment: step-counter;
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   background: var(--badge-bg);
   color: var(--text-accent);
@@ -562,45 +548,54 @@ body {
   align-items: center;
   justify-content: center;
   font-weight: bold;
-  font-size: 11px;
-  flex-shrink: 0;
+  font-size: 12px;
 }
 
-.step-compact-body {
-  flex: 1;
-  font-size: 13px;
-  line-height: 1.5;
-}
-
-.step-compact-thumb {
-  width: 80px;
-  height: 60px;
-  border-radius: 6px;
+.step-image-container {
+  margin-top: 12px;
+  margin-bottom: 12px;
+  border-radius: 8px;
   overflow: hidden;
+  max-width: 400px;
   border: 1px solid var(--border-light);
-  flex-shrink: 0;
-  background: var(--bg-card);
+  box-shadow: 0 4px 12px var(--shadow-color);
 }
 
-.step-compact-thumb svg, .step-compact-thumb img {
+.step-image-container img {
   width: 100%;
-  height: 100%;
+  height: 180px;
   object-fit: cover;
+  display: block;
+}
+
+.step-timer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: var(--badge-bg);
+  border: 1px solid var(--border-color);
+  color: var(--text-accent);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 8px;
 }
 
 /* Floating Timer Bar */
 #timer-floating-widget {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: 24px;
+  right: 24px;
   background: var(--bg-card);
   border: 1px solid var(--text-accent);
-  border-radius: 20px;
-  padding: 8px 16px;
+  border-radius: 30px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
-  gap: 12px;
-  box-shadow: 0 8px 24px var(--shadow-color);
+  gap: 16px;
+  box-shadow: 0 10px 30px var(--shadow-color);
   z-index: 1000;
 }
 
@@ -609,7 +604,7 @@ body {
 }
 
 .timer-label {
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1px;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -617,7 +612,7 @@ body {
 
 .timer-digits {
   font-family: monospace;
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: var(--text-accent);
 }
@@ -631,7 +626,7 @@ body {
   height: 100vh;
   background: var(--bg-main);
   z-index: 2000;
-  padding: 40px;
+  padding: 60px;
   display: flex;
   flex-direction: column;
 }
@@ -640,7 +635,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 24px;
+  margin-bottom: 40px;
 }
 
 .cooking-step-container {
@@ -648,42 +643,35 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
   text-align: center;
 }
 
 .cooking-step-img {
-  max-width: 400px;
-  max-height: 220px;
+  max-width: 500px;
+  max-height: 280px;
   width: 100%;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  margin: 0 auto 16px auto;
-  overflow: hidden;
-  background: var(--bg-card);
-}
-
-.cooking-step-img svg, .cooking-step-img img {
-  width: 100%;
-  height: 100%;
   object-fit: cover;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  margin: 0 auto 20px auto;
 }
 
 .cooking-step-num {
-  font-size: 12px;
-  letter-spacing: 3px;
+  font-size: 14px;
+  letter-spacing: 4px;
   text-transform: uppercase;
   color: var(--text-accent);
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 
 .cooking-step-text {
   font-family: var(--font-display);
-  font-size: 26px;
-  line-height: 1.4;
+  font-size: 32px;
+  line-height: 1.5;
   color: var(--text-main);
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 
 .cooking-nav {
@@ -691,22 +679,36 @@ body {
   justify-content: space-between;
 }
 
-/* Compact Form Editor View */
+/* Redesigned Streamlined Recipe Edit Form */
 .form-wrap {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
-  border-radius: 12px;
-  padding: 24px;
+  border-radius: 16px;
+  padding: 32px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
 }
 
 .form-field {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .form-field label {
   display: block;
-  font-size: 10px;
-  letter-spacing: 1px;
+  font-size: 11px;
+  letter-spacing: 1.5px;
   text-transform: uppercase;
   color: var(--text-accent);
   margin-bottom: 6px;
@@ -717,17 +719,22 @@ body {
   background: var(--bg-input);
   border: 1px solid var(--border-color);
   color: var(--text-main);
-  padding: 8px 12px;
-  border-radius: 6px;
+  padding: 10px 14px;
+  border-radius: 8px;
   font-family: inherit;
   font-size: 13px;
   outline: none;
 }
 
+.form-input:focus, .form-textarea:focus {
+  border-color: var(--text-accent);
+}
+
 .row-group {
   display: flex;
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 8px;
+  align-items: center;
 }
 
 .row-remove-btn {
@@ -735,7 +742,7 @@ body {
   color: var(--danger-color);
   border: 1px solid var(--danger-color);
   border-radius: 6px;
-  padding: 6px 10px;
+  padding: 8px 12px;
   cursor: pointer;
   font-weight: bold;
 }
@@ -744,19 +751,20 @@ body {
   background: var(--badge-bg);
   border: 1px solid var(--border-color);
   color: var(--text-accent);
-  padding: 6px 12px;
+  padding: 8px 16px;
   border-radius: 6px;
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  margin-top: 4px;
 }
 
 .step-card-edit {
   background: var(--bg-input);
   border: 1px solid var(--border-light);
-  border-radius: 8px;
-  padding: 12px;
-  margin-bottom: 10px;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 12px;
 }
 
 .step-card-edit-header {
